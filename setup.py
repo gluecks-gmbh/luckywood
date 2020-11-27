@@ -14,11 +14,12 @@ setup_args = dict(
     long_description=README + '\n\n' + HISTORY,
     license='LGPL-3.0',
     packages=find_packages(),
-    author='Frederik Glücks & Christian Wald-von der Lahr',
-    author_email='luckywood@gluecks-gmbh.de',
+    author='Frederik Glücks, Christian Wald-von der Lahr',
+    author_email='frederik@gluecks-gmbh.de, mail@waldvonderlahr-it.de',
     keywords=[],
     url='https://github.com/gluecks-gmbh/luckywood',
-    download_url='https://pypi.org/project/luckywood/'
+    download_url='https://pypi.org/project/luckywood/',
+    python_requires='>=3.7'
 )
 
 install_requires = [
