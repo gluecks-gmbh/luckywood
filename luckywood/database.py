@@ -1,13 +1,14 @@
 """
-Objekt für die Nutzung einer MySQL-Datenbank
+Helper class for mysql database usage
 """
 
 __author__ = "Frederik Glücks"
 __email__ = "frederik@gluecks-gmbh.de"
-__copyright__ = ""
+__copyright__ = "Frederik Glücks - Glücks GmbH"
 
 # Built-in/Generic Imports
 import os
+import logging
 import hashlib
 import mysql.connector
 import mysql.connector.cursor
@@ -18,7 +19,7 @@ from .data_caching import DataCaching
 
 class Database:
     """
-    MySQL Abstraktion
+    Helper class for mysql database usage
     """
     __cnx: mysql.connector = None
     __cursor: mysql.connector.cursor = None
@@ -26,14 +27,22 @@ class Database:
     @staticmethod
     def open():
         """
-        Verbindung zur MySQL Datenbank wird an Hand von Environment Variablen aufgebaut
+        Creates a database connection by using environment vars.
+
+        Environment vars:
+        RDS_HOST = database host, default value "localhost"
+        RDS_HOST_PORT = database port, default value "3306"
+        RDS_DATABASE = database name, default value ""
+        RDS_USERNAME = username, default value ""
+        RDS_PASSWORD = password, default value ""
+
         :return: none
         """
-        host: str = os.getenv('RDS_HOST', 'None')
-        port: str = os.getenv('RDS_HOST_PORT', 'None')
+        host: str = os.getenv('RDS_HOST', 'localhost')
+        port: str = os.getenv('RDS_HOST_PORT', '3306')
         database: str = os.getenv('RDS_DATABASE', 'None')
-        username: str = os.getenv('RDS_USERNAME', 'None')
-        password: str = os.getenv('RDS_PASSWORD', 'None')
+        username: str = os.getenv('RDS_USERNAME', '')
+        password: str = os.getenv('RDS_PASSWORD', '')
 
         Database.__cnx = mysql.connector.connect(username=username,
                                                  password=password,
@@ -48,7 +57,8 @@ class Database:
     @staticmethod
     def close():
         """
-        Datenbank-Verbindung wird geschlossen
+        Closes the database connection
+
         :return: none
         """
         if Database.__cnx:
@@ -58,9 +68,9 @@ class Database:
     @staticmethod
     def fetchall_without_cache(query: str, param: tuple = ()) -> dict:
         """
-        Liefert alle Ergebnisse eines queries als dict zurück.
+        Returns the result of the query as dict.
 
-        Der Interne Cache wird nicht genutzt.
+        The luckywood DataCaching class will NOT be used.
 
         :param query: str
         :param param: tuple
@@ -78,6 +88,14 @@ class Database:
 
     @staticmethod
     def fetchall_with_cache(query: str, param: tuple = ()) -> dict:
+        """
+        Returns the result of the query as dict by using the luckywood DataCaching
+        class.
+
+        :param query: str
+        :param param: tuple
+        :return: dict
+        """
         tuple_str: str = ""
 
         for var in param:
@@ -89,7 +107,29 @@ class Database:
         result_set = DataCaching.get(cache_name, query_hash)
 
         if len(result_set) == 0:
+            logging.info("Query load from database")
             result_set = Database.fetchall_without_cache(query, param)
             DataCaching.set(cache_name, query_hash, result_set)
+        else:
+            logging.info("Query load from cache")
 
         return result_set
+
+    @staticmethod
+    def query(query: str, param: tuple = ()) -> int:
+        """
+        Runs a query and returns the number of affected rows
+
+        :param query: str
+        :param param: tuple
+        :return: int
+        """
+        if Database.__cursor is None:
+            Database.open()
+
+        Database.__cursor.execute(query, param)
+
+        if Database.__cursor.fetchwarnings() is not None:
+            logging.info(Database.__cursor.fetchwarnings())
+
+        return Database.__cursor.rowcount
