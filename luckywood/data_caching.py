@@ -1,20 +1,22 @@
 """
-Objekt für die Nutzung einer MySQL-Datenbank
+Data caching class
 """
 
 __author__ = "Frederik Glücks"
 __email__ = "frederik@gluecks-gmbh.de"
-__copyright__ = ""
+__copyright__ = "Frederik Glücks - Glücks GmbH"
 
 
 class DataCaching:
+    """
+    Data caching class
+    """
     __cache: dict = {}
 
     @staticmethod
     def clear() -> int:
         """
-        Leert den internen Cache vollständig und gibt die Anzahl
-        der gelöschten Einträge zurück
+        Complete clearing the data cache and return the number of cleared objects.
 
         :return: int
         """
@@ -24,44 +26,49 @@ class DataCaching:
 
     @staticmethod
     def get_statistic() -> dict:
+        """
+        Return the number of cached object. Group by cache_group and object name
+
+        :return: dict
+        """
         statistic: dict = {}
 
-        for cache_name in DataCaching.__cache:
-            statistic[cache_name] = {}
+        for group_name in DataCaching.__cache:
+            statistic[group_name] = {}
 
-            for cache_id in DataCaching.__cache[cache_name]:
-                statistic[cache_name][cache_id] = len(DataCaching.__cache[cache_name][cache_id])
+            for object_id in DataCaching.__cache[group_name]:
+                statistic[group_name][object_id] = len(DataCaching.__cache[group_name][object_id])
 
         return statistic
 
     @staticmethod
-    def get(cache_name: str, key: str) -> dict:
+    def get(group_name: str, object_id: str) -> dict:
         """
+        Returns the value of object_id.
+        If the object doesn't exists an empty dict will returned
 
-        :param cache_name: str
-        :param key: str
+        :param group_name: str
+        :param object_id: str
         :return: dict
         """
 
-        if cache_name in DataCaching.__cache:
-            if key in DataCaching.__cache[cache_name]:
-                return DataCaching.__cache[cache_name][key]
-            else:
-                return {}
-        else:
+        if group_name not in DataCaching.__cache:
             return {}
 
+        return DataCaching.__cache[group_name].get(object_id, {})
+
     @staticmethod
-    def set(cache_name: str, key: str, value: dict):
+    def set(group_name: str, object_id: str, value: dict):
         """
+        Adds the value of to the data cache
 
-        :param cache_name: str
-        :param key: str
+        :param group_name: str
+        :param object_id: str
         :param value: dict
-        :return:
+        :return: None
         """
 
-        if cache_name not in DataCaching.__cache:
-            DataCaching.__cache[cache_name] = {}
+        if group_name not in DataCaching.__cache:
+            DataCaching.__cache[group_name] = {}
 
-        DataCaching.__cache[cache_name][key] = value
+        DataCaching.__cache[group_name][object_id] = value
