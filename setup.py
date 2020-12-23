@@ -8,7 +8,7 @@ with open('HISTORY.md') as history_file:
 
 setup_args = dict(
     name='luckywood',
-    version='0.0.3',
+    version='0.1.0',
     description='Package of helper classes.',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
@@ -23,7 +23,8 @@ setup_args = dict(
 )
 
 install_requires = [
-    "mysql-connector-python~=8.0.22"
+    "mysql-connector-python~=8.0.22",
+    "requests~=2.25.1"
 ]
 
 if __name__ == '__main__':
