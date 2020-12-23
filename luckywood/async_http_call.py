@@ -30,7 +30,9 @@ class AsyncHttpCall:
         :param bearer_token: str
         :return: None
         """
-        threading.Thread(target=AsyncHttpCall.thread_call, args=(url, method.upper(), payload, bearer_token)).start()
+        threading.Thread(target=AsyncHttpCall.thread_call,
+                         args=(url, method.upper(), payload, bearer_token)
+                         ).start()
 
     @staticmethod
     def thread_call(url: str, method: str, payload: str, bearer_token: str):
