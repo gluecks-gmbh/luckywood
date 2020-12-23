@@ -10,9 +10,11 @@ __copyright__ = "Frederik Glücks - Glücks GmbH"
 import os
 import logging
 import hashlib
+from typing import List, Dict
+
+# External libs/modules
 import mysql.connector
 import mysql.connector.cursor
-from typing import List, Dict
 
 # own libs
 from .data_caching import DataCaching
