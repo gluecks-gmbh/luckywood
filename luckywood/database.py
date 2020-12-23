@@ -12,6 +12,7 @@ import logging
 import hashlib
 import mysql.connector
 import mysql.connector.cursor
+from typing import List, Dict
 
 # own libs
 from .data_caching import DataCaching
@@ -66,7 +67,7 @@ class Database:
             Database.__cnx.close()
 
     @staticmethod
-    def fetchall_without_cache(query: str, param: tuple = ()) -> dict:
+    def fetchall_without_cache(query: str, param: tuple = ()) -> List[Dict[str, str]]:
         """
         Returns the result of the query as dict.
 
@@ -87,7 +88,7 @@ class Database:
         return Database.__cursor.fetchall()
 
     @staticmethod
-    def fetchall_with_cache(query: str, param: tuple = ()) -> dict:
+    def fetchall_with_cache(query: str, param: tuple = ()) -> List[Dict[str, str]]:
         """
         Returns the result of the query as dict by using the luckywood DataCaching
         class.
