@@ -54,6 +54,7 @@ class Database:
                                                  port=port)
 
         Database.__cnx.autocommit = True
+        Database.__cnx.get_warnings = True
 
         Database.__cursor = Database.__cnx.cursor(dictionary=True)
 
