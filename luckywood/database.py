@@ -137,3 +137,44 @@ class Database:
             logging.info(Database.__cursor.fetchwarnings())
 
         return Database.__cursor.rowcount
+
+    @staticmethod
+    def get_last_row_id() -> int:
+        """
+        This read-only property returns the value generated for an AUTO_INCREMENT column
+        by the previous INSERT or UPDATE statement or None when there is no such value available.
+
+        :return: int
+        """
+        if Database.__cursor is None:
+            Database.open()
+
+        return Database.__cursor.lastrowid
+
+    @staticmethod
+    def start_transaction() -> bool:
+        """
+        start a new MySQL Transaction
+
+        :return: bool
+        """
+        if Database.__cursor is None:
+            Database.open()
+
+        Database.__cnx.start_transaction()
+
+        return True
+
+    @staticmethod
+    def commit_transaction() -> bool:
+        """
+        commits the current transaction, making its changes permanent.
+
+        :return: bool
+        """
+        if Database.__cursor is None:
+            Database.open()
+
+        Database.__cnx.commit()
+
+        return True    
