@@ -8,14 +8,14 @@ with open('HISTORY.md') as history_file:
 
 setup_args = dict(
     name='luckywood',
-    version='0.3.0',
+    version='0.4.0',
     description='Package of helper classes.',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
     license='LGPL-3.0',
     packages=find_packages(),
     author='Frederik Glücks, Christian Wald-von der Lahr',
-    author_email='frederik@gluecks-gmbh.de, mail@waldvonderlahr-it.de',
+    author_email='frederik@gluecks-gmbh.de, christian@waldvonderlahr-it.de',
     keywords=[],
     url='https://github.com/gluecks-gmbh/luckywood',
     download_url='https://pypi.org/project/luckywood/',
