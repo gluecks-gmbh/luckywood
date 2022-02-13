@@ -3,5 +3,5 @@ wheel~=0.37.1
 readchar~=3.0.4
 twine~=3.2.0
 mysql-connector-python~=8.0.22
-requests~=2.26.0
-chalice~=1.21.6
+requests~=2.27.1
+chalice~=1.26.5
