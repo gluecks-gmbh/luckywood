@@ -23,7 +23,7 @@ setup_args = dict(
 )
 
 install_requires = [
-    "mysql-connector-python~=8.0.29",
+    "mysql-connector-python~=8.0.31",
     "requests~=2.28.0"
 ]
 
