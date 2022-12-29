@@ -24,7 +24,8 @@ setup_args = dict(
 
 install_requires = [
     "mysql-connector-python~=8.0.31",
-    "requests~=2.28.0"
+    "requests~=2.28.0",
+    "boto3==1.26.29"
 ]
 
 if __name__ == '__main__':
