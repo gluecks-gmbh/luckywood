@@ -8,7 +8,7 @@ with open('HISTORY.md') as history_file:
 
 setup_args = dict(
     name='luckywood',
-    version='0.5.3',
+    version='0.5.4',
     description='Package of helper classes.',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
@@ -19,7 +19,7 @@ setup_args = dict(
     keywords=[],
     url='https://github.com/gluecks-gmbh/luckywood',
     download_url='https://pypi.org/project/luckywood/',
-    python_requires='>=3.7'
+    python_requires='>=3.8'
 )
 
 install_requires = [
