@@ -41,22 +41,28 @@ class Database:
 
         :return: none
         """
+        Database.__cnx = Database._create_cnx()
+
+        Database.__cursor = Database.__cnx.cursor(dictionary=True)
+
+    @staticmethod
+    def _create_cnx():
         host: str = os.getenv('RDS_HOST', 'localhost')
         port: str = os.getenv('RDS_HOST_PORT', '3306')
         database: str = os.getenv('RDS_DATABASE', 'None')
         username: str = os.getenv('RDS_USERNAME', '')
         password: str = os.getenv('RDS_PASSWORD', '')
 
-        Database.__cnx = mysql.connector.connect(username=username,
-                                                 password=password,
-                                                 host=host,
-                                                 database=database,
-                                                 port=port)
+        cnx = mysql.connector.connect(username=username,
+                                      password=password,
+                                      host=host,
+                                      database=database,
+                                      port=port)
 
-        Database.__cnx.autocommit = True
-        Database.__cnx.get_warnings = True
+        cnx.autocommit = True
+        cnx.get_warnings = True
 
-        Database.__cursor = Database.__cnx.cursor(dictionary=True)
+        return cnx
 
     @staticmethod
     def close():
@@ -124,6 +130,22 @@ class Database:
         return result_set
 
     @staticmethod
+    def fetch_with_own_cnx(query: str, param: tuple = ()) -> List[Dict[str, str]]:
+        cnx = Database._create_cnx()
+        cursor = cnx.cursor(dictionary=True)
+        if query == "":
+            raise RuntimeError("Empty query")
+
+        cursor.execute(query, param)
+
+        result = cursor.fetchall()
+
+        cursor.close()
+        cnx.close()
+
+        return result
+
+    @staticmethod
     def query(query: str, param: tuple = ()) -> int:
         """
         Runs a query and returns the number of affected rows
@@ -181,4 +203,4 @@ class Database:
 
         Database.__cnx.commit()
 
-        return True    
+        return True
