@@ -91,7 +91,7 @@ class Database:
         return Database.__cursor.fetchall()
 
     @staticmethod
-    def fetchall_with_cache(query: str, param: tuple = (), 
+    def fetchall_with_cache(query: str, param: tuple = (),
                             force_update: bool = False) -> List[Dict[str, str]]:
         """
         Returns the result of the query as dict by using the luckywood DataCaching
