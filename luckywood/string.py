@@ -1,5 +1,5 @@
 """
-
+String class for string operations
 """
 
 __author__ = "Glücks GmbH - Frederik Glücks"
@@ -13,9 +13,16 @@ from typing import Dict
 
 
 class String:
+    """String class for string operations"""
 
     @staticmethod
     def decode_to_url(raw_string: str) -> str:
+        """Decode a string to a url string
+
+        :param raw_string: String to decode
+        :return: Decoded string
+        """
+
         url_string = raw_string.lower()
 
         decode_chars: Dict[str, str] = {
