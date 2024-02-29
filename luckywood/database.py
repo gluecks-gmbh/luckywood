@@ -105,7 +105,7 @@ class Database:
 
         :param query: str
         :param param: tuple
-        :param param: force_update
+        :param force_update: bool
         :return: dict
         """
         tuple_str: str = ""
